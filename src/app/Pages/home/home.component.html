@@ -8,20 +8,7 @@
                      <div class="row">
 
                         <div>
-                            <div class="chat-bottom dark-bg p-3 shadow-xss" style="width: 48.5%;">
-                                <div ><input class="input-painel" type="text" placeholder="Endereço" ></div>                                      
-                                <button class="botao-top" style="margin: 0 1.8%" >Adicionar</button>
-                                <button class="botao-top" >Sair</button>
-                            </div> 
-    
-                            <div class="chat-bottom dark-bg p-3 shadow-xss scroll-bar" style="width: 48.5% !important; left: 49% !important; height: 124px; overflow-y: scroll; overflow-x: hidden;" >  
-                                <ul class="list-group list-group-flush">
-                                    <li *ngFor="let solicitacao of solicitacoes" class="bg-transparent list-group-item no-icon pl-0" >
-                                        <h3 class="fw-500 mb-0 mt-1"><a [ngClass]="solicitacao.rg == rg ? 'selecionado' : 'text-grey-900'" class="font-xsss  text-dark d-block" (click)="selecionarRg(solicitacao.rg)">{{solicitacao.rg}}</a></h3>
-                                        <div (click)="excluirSolicitacao(solicitacao.id, solicitacao.rg)" style="position: relative;width: 16px; height: 16px; top: -19px; left: calc(100% - 15px); font-size: 12px; color: black;">X</div>
-                                    </li>
-                                </ul>
-                            </div>
+                            <app-solicitacoes></app-solicitacoes>
 
                         </div>
                         
