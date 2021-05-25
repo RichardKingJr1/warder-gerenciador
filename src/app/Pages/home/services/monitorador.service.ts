@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
+import { DataAjusteService } from './data-ajuste.service';
+import { WebSocketService } from './web-socket.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MonitoradorService {
 
-  //config distancia
+  //config 
   public distancia_config = 0.00050;
+  public tempo_permanencia = 5;
 
-  constructor() { }
+  constructor(private webSocketService:WebSocketService, private _dataAjusteService: DataAjusteService) { }
 
   //verificar distancia
   verificarDistancia(lat:number, lat_d: number, lon:number, lon_d:number, status:number){
@@ -26,4 +29,32 @@ export class MonitoradorService {
       }
     }
   }
+
+  //envia para o servido uma atualização da fase em que o usuario esta e também indica o proximo tempo previsto correto
+  atualizaPosicao(rg:string, fase:number, tempo_viajem: number){
+    let today = new Date();
+    //calcula tempo medio de chegada
+    let tempo_futuro;
+    if(fase == 2){
+      tempo_futuro = this.tempo_permanencia;
+    }else{
+      //função busca tempo
+      tempo_futuro = tempo_viajem;
+    };
+    
+    console.log(tempo_futuro);
+
+    let tempo = new Date(today.getTime() + (tempo_futuro*60000));
+    //ajusta horario
+    let proximo_tempo = this._dataAjusteService.ajustarHora(tempo);
+
+    let dataObj = {
+      rg: rg,
+      status:fase,
+      tempo:proximo_tempo
+    };
+    this.webSocketService.emit('atualizarStatus', dataObj);
+  };
+
+
 }

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { BuscarImovelService } from '../../services/buscar-imovel.service';
 import { DataAjusteService } from '../../services/data-ajuste.service';
+
 import { WebSocketService } from '../../services/web-socket.service';
+import { BuscarImovelService } from './services/buscar-imovel.service';
+
 
 @Component({
   selector: 'app-solicitacoes',
@@ -14,7 +16,11 @@ export class SolicitacoesComponent implements OnInit {
   public rg: string | null = null;
   public endereco: string | null = null;
 
-  constructor(private webSocketService:WebSocketService, private _buscarImovel:BuscarImovelService, private _dataAjusteService: DataAjusteService) { }
+  constructor(
+    private webSocketService:WebSocketService,
+    private _buscarImovel:BuscarImovelService,
+    private _dataAjusteService: DataAjusteService
+    ) { }
 
   ngOnInit(): void {
     this.buscarSolicitacao();
