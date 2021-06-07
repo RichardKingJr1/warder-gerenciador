@@ -8,6 +8,8 @@ import { WebSocketService } from './services/web-socket.service';
 })
 export class HomeComponent implements OnInit {
 
+  
+
   constructor(private webSocketService:WebSocketService) { }
 
   ngOnInit(): void {
@@ -20,5 +22,7 @@ export class HomeComponent implements OnInit {
       this.webSocketService.emit('userMaster', 'a');
     });
   }
+
+  
 
 }
