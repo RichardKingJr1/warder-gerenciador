@@ -10,8 +10,8 @@ export class WebSocketService {
   socket: Socket;
 
   constructor() {
-    this.socket = io();
-    //this.socket = io('http://localhost:3000');
+    //this.socket = io();
+    this.socket = io('http://localhost:3000');
   }
 
   listen(eventName: string) {

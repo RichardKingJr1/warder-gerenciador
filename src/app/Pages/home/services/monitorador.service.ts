@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { estacionandoType, usuarioType } from 'src/app/interfaces/usuario';
 import { DataAjusteService } from './data-ajuste.service';
 import { WebSocketService } from './web-socket.service';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +12,12 @@ import { WebSocketService } from './web-socket.service';
 export class MonitoradorService {
 
   //variaveis de usuarios
-  public usuarios_pre: usuario[] = []; 
-  public usuarios: usuario[] | null = null;
-  public ultimos_usuarios: usuario[] | null = null;
-  public estacionando: estacionando[] = [];
+  public usuarios_pre: usuarioType[] = [];
+  public usuarios: usuarioType[] | null = null;
+  public ultimosUsuarios: usuarioType[] | null = null;
+  public estacionando: estacionandoType[] = [];
+
+  public currentUsuarios: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   //config variaveis inicias
   public distancia_config = 0.00050;
@@ -23,15 +29,15 @@ export class MonitoradorService {
 
 
   //busca usuarios e status atual dos usuarios
-  Busca(){
+    busca(): Observable<usuarioType[]>  {
     this.webSocketService.listen('newUser').subscribe((data:any) => {
       console.log(data);
-      this.ultimos_usuarios = this.usuarios;
+      this.ultimosUsuarios = this.usuarios;
       this.usuarios_pre = data;
       this.usuarios = data;
 
 
-      if(this.ultimos_usuarios){
+      if(this.ultimosUsuarios){
         //descobre a fase da viagem
         for (const x of this.usuarios_pre){ 
           switch(x.status){
@@ -80,7 +86,11 @@ export class MonitoradorService {
           };   
         };
       }
+
+      this.currentUsuarios.next(this.usuarios);
     })
+    
+    return this.currentUsuarios;
   }
 
   //verificar distancia

@@ -1,4 +1,4 @@
-interface usuario {
+export interface usuarioType {
     id: string,
     id_imovel: number,
     rg: string,
@@ -18,7 +18,7 @@ interface usuario {
     onRoute: boolean
 }
 
-interface estacionando {
+export interface estacionandoType {
     rg: string;
     timestamp: number;
 }
