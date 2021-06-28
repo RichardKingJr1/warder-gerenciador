@@ -12,6 +12,7 @@ export class HomeComponent implements OnInit {
 
   public usuarios: usuarioType[] = [];
 
+
   constructor(private webSocketService:WebSocketService, private _monitorador: MonitoradorService) { }
 
   ngOnInit(): void {
@@ -30,6 +31,11 @@ export class HomeComponent implements OnInit {
     this._monitorador.busca().subscribe((data) =>{
       this.usuarios = data;
     })
+  }
+
+  finalizarTracking(id:string){
+    console.log(id);
+    this.webSocketService.emit('admDisconnect', id);
   }
 
 }

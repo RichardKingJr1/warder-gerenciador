@@ -14,7 +14,8 @@ export class BuscarImovelService {
    public imoveis = [
      {
          "id_imovel": 2,
-         "endereco": "alameda das bauinias 200",
+         //"endereco": "alameda das bauinias 200",
+         "endereco": "alameda das laranjeiras 777",
          "lat": -22.9143303497,
          "lon": -47.0038909367,
          "tempo": 5,

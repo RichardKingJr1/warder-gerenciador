@@ -22,10 +22,10 @@ export class DataAjusteService {
   }
 
   //função derivada de ajsutar hora, roda em processamento interno
-  checkTime(i:NumberFormatStyle) {
-    let i_string: string = '';
+  checkTime(i:number) {
+    let i_string: string = i.toString();
     if (i < 10) {
-      i_string = "0" + i;
+      i_string = "0" + i.toString();
     }
     return i_string;
   }
