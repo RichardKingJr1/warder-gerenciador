@@ -12,6 +12,9 @@ export class HomeComponent implements OnInit {
 
   public usuarios: usuarioType[] = [];
 
+  //filtro dos trackings
+  public chaveFiltro: string | null = null;
+
 
   constructor(private webSocketService:WebSocketService, private _monitorador: MonitoradorService) { }
 

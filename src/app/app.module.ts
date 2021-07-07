@@ -8,13 +8,15 @@ import { HomeComponent } from './Pages/home/home.component';
 import { SolicitacoesComponent } from './Pages/home/children/solicitacoes/solicitacoes.component';
 
 import { FormsModule } from '@angular/forms';
+import { FiltroPipe } from './Pages/home/services/filtro.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    SolicitacoesComponent
+    SolicitacoesComponent,
+    FiltroPipe
   ],
   imports: [
     BrowserModule,
