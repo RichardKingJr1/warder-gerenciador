@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { usuarioType } from 'src/app/interfaces/usuario';
-import { MonitoradorService } from './services/monitorador.service';
 import { WebSocketService } from './services/web-socket.service';
 
 @Component({
@@ -10,18 +8,12 @@ import { WebSocketService } from './services/web-socket.service';
 })
 export class HomeComponent implements OnInit {
 
-  public usuarios: usuarioType[] = [];
-
-  //filtro dos trackings
-  public chaveFiltro: string | null = null;
-
-
-  constructor(private webSocketService:WebSocketService, private _monitorador: MonitoradorService) { }
+  constructor(private webSocketService:WebSocketService) { }
 
   ngOnInit(): void {
     //testa se ouve uma conexão ou uma reconexão, caso ocorra avisa o server quem é o userMaster
     this.conexao();
-    this.monitorarUsuarios()
+    
   }
 
   conexao(){
@@ -30,15 +22,6 @@ export class HomeComponent implements OnInit {
     });
   }
   
-  monitorarUsuarios(){
-    this._monitorador.busca().subscribe((data) =>{
-      this.usuarios = data;
-    })
-  }
-
-  finalizarTracking(id:string){
-    console.log(id);
-    this.webSocketService.emit('admDisconnect', id);
-  }
+  
 
 }

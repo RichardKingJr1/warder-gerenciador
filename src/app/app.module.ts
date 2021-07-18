@@ -9,6 +9,7 @@ import { SolicitacoesComponent } from './Pages/home/children/solicitacoes/solici
 
 import { FormsModule } from '@angular/forms';
 import { FiltroPipe } from './Pages/home/services/filtro.pipe';
+import { TabelaUsuariosComponent } from './Pages/home/children/tabela-usuarios/tabela-usuarios.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { FiltroPipe } from './Pages/home/services/filtro.pipe';
     LoginComponent,
     HomeComponent,
     SolicitacoesComponent,
-    FiltroPipe
+    FiltroPipe,
+    TabelaUsuariosComponent
   ],
   imports: [
     BrowserModule,
