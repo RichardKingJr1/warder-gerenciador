@@ -61,6 +61,39 @@ export class TabelaUsuariosComponent implements OnInit {
     });
   }
 
+  handleTimeOut(){
+    //começa a ouvir por alertas de ping timeout
+    this.webSocketService.listen('pingTimeout').subscribe((data: any) => {
+      
+      this.usuarios = data;
+
+      this.audioSinal.nativeElement.play();
+
+      /* this.timeOut.push(data);
+      if(this.ultimos_usuarios){
+        for (const x of this.usuarios){
+          //criar função que indica se algum dos tracking esta em ping timeout
+          for (const z of this.timeOut){
+            let foundIndex = this.usuarios.findIndex(h => h.id == z.id);
+            if(foundIndex != -1){
+              x.timeOut = true;
+            };
+          };
+        };
+      }; */
+
+      console.log('ping timeout');
+    })
+  }
+
+  handleReconect(){
+    //ouve se o usuario se reconectou, se sim retira o timeout do do array de timeouts
+    this.webSocketService.listen('alreadyConnected').subscribe((data: any) => {
+      //this.timeOut = this.timeOut.filter(u => u.rg !== data);  
+      this.usuarios = data;
+    })
+  }
+
   finalizarTracking(id:string){
     console.log(id);
     this.webSocketService.emit('admDisconnect', id);
