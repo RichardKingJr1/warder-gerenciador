@@ -14,8 +14,8 @@
             <h3 class="fw-700 mb-0 mt-1">
                 <a class="font-xss text-grey-900 text-dark d-block">{{usuario.rg}} <!-- - A caminho --> 
                     <a [hidden]="!usuario.timeOut"><span class="font-xsssss fw-700 pl-3 pr-3 lh-15 text-uppercase rounded-lg ls-2 alert-warning d-inline-block text-warning mr-1 ml-1 posicao-cartao"> Conexão</span></a>
-                    <a [hidden]="!usuario.ultrapassouTempo" ><span  class="font-xsssss fw-700 pl-3 pr-3 lh-15 text-uppercase rounded-lg ls-2 alert-danger d-inline-block text-danger mr-1 ml-1 posicao-cartao"> Tempo </span></a>
-                    <a [hidden]="usuario.onRoute" ><span  class="font-xsssss fw-700 pl-3 pr-3 lh-15 text-uppercase rounded-lg ls-2 alert-danger d-inline-block text-danger mr-1 ml-1 posicao-cartao"> Rota </span></a>
+                    <a [hidden]="!usuario.ultrapassouTempo" ><span (click)="excluirAlertaTempo(usuario.rg, usuario.status)" class="font-xsssss fw-700 pl-3 pr-3 lh-15 text-uppercase rounded-lg ls-2 alert-danger d-inline-block text-danger mr-1 ml-1 posicao-cartao"> Tempo </span></a>
+                    <a [hidden]="usuario.onRoute" ><span (click)="excluirAlertaRota(usuario.rg)" class="font-xsssss fw-700 pl-3 pr-3 lh-15 text-uppercase rounded-lg ls-2 alert-danger d-inline-block text-danger mr-1 ml-1 posicao-cartao"> Rota </span></a>
                     <a [hidden]="!usuario.minimizou"><span class="font-xsssss fw-700 pl-3 pr-3 lh-15 text-uppercase rounded-lg ls-2 alert-warning d-inline-block text-warning mr-1 ml-1 posicao-cartao"> Minimizado</span></a>
                 </a>
             </h3> 

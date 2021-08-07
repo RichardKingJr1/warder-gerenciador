@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { usuarioType } from 'src/app/interfaces/usuario';
+import { DataAjusteService } from '../../services/data-ajuste.service';
 import { MonitoradorService } from '../../services/monitorador.service';
 import { WebSocketService } from '../../services/web-socket.service';
 
@@ -14,7 +15,9 @@ export class TabelaUsuariosComponent implements OnInit {
   public chaveFiltro: string | null = null;
   public usuarios: usuarioType[] = [];
 
-  constructor(private webSocketService:WebSocketService, private _monitorador: MonitoradorService) { }
+  public dismiss_aviso = 20;
+
+  constructor(private webSocketService:WebSocketService, private _monitorador: MonitoradorService, private _dataAjusteService: DataAjusteService) { }
 
   @ViewChild('audioTempo', {static: false}) audioTempo!: ElementRef;
   @ViewChild('audioDisconnect', {static: false}) audioDisconnect!: ElementRef;
@@ -27,6 +30,8 @@ export class TabelaUsuariosComponent implements OnInit {
 
     this.handleMinimize();
     this.handleTempo();
+    this.handleTimeOut();
+    this.handleReconect();
   }
 
   monitorarUsuarios(){
@@ -35,6 +40,14 @@ export class TabelaUsuariosComponent implements OnInit {
     })
   }
 
+  finalizarTracking(id:string){
+    console.log(id);
+    this.webSocketService.emit('admDisconnect', id);
+  }
+
+
+
+  /********** Alertas *************/
   handleMinimize(){
     //começa a ouvir por alertas de minimizado e atualizações de status caso o usuario minimize ou maximize
     this.webSocketService.listen('minimizadoMaximizado').subscribe((data: any) => {
@@ -94,9 +107,24 @@ export class TabelaUsuariosComponent implements OnInit {
     })
   }
 
-  finalizarTracking(id:string){
-    console.log(id);
-    this.webSocketService.emit('admDisconnect', id);
-  }
+  /*****  Excluir alertas *****/
+  excluirAlertaTempo(rg:string, status:number){
+    console.log('Alerta dismiss ok');
+    let today = new Date();
+    let dataObj = {
+      rg: rg,
+      status: status,
+      tempo: this._dataAjusteService.ajustarHora(new Date(today.getTime() + this.dismiss_aviso*60000))
+    };
+    this.webSocketService.emit('dismissAlertraTempo', dataObj);    
+  };
+
+  excluirAlertaRota(rg:string){
+    console.log('Alerta rota dismiss ok');
+    this.webSocketService.emit('dismissAlertaRota', rg);    
+  };
+
+  
+  
 
 }
