@@ -20,7 +20,6 @@ export class TabelaUsuariosComponent implements OnInit {
   constructor(private webSocketService:WebSocketService, private _monitorador: MonitoradorService, private _dataAjusteService: DataAjusteService) { }
 
   @ViewChild('audioTempo', {static: false}) audioTempo!: ElementRef;
-  @ViewChild('audioDisconnect', {static: false}) audioDisconnect!: ElementRef;
   @ViewChild('audioSinal', {static: false}) audioSinal!: ElementRef;
   @ViewChild('audioRota', {static: false}) audioRota!: ElementRef;
   @ViewChild('audioMinimizado', {static: false}) audioMinimizado!: ElementRef;
