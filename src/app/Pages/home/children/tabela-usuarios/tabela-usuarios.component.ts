@@ -25,7 +25,7 @@ export class TabelaUsuariosComponent implements OnInit {
   @ViewChild('audioMinimizado', {static: false}) audioMinimizado!: ElementRef;
 
   ngOnInit(): void {
-    this.monitorarUsuarios()
+    this.monitorarUsuarios();
 
     this.handleMinimize();
     this.handleTempo();

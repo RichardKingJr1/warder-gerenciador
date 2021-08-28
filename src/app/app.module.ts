@@ -12,6 +12,10 @@ import { FiltroPipe } from './Pages/home/services/filtro.pipe';
 import { TabelaUsuariosComponent } from './Pages/home/children/tabela-usuarios/tabela-usuarios.component';
 import { DisconexoesComponent } from './Pages/home/children/disconexoes/disconexoes.component';
 
+import { AgmCoreModule } from '@agm/core';
+import { MapaComponent } from './Pages/home/children/mapa/mapa.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,12 +24,16 @@ import { DisconexoesComponent } from './Pages/home/children/disconexoes/disconex
     SolicitacoesComponent,
     FiltroPipe,
     TabelaUsuariosComponent,
-    DisconexoesComponent
+    DisconexoesComponent,
+    MapaComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBwpIoGAWFL4xQnYb7ZT_p9lWQugkhTg10'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
