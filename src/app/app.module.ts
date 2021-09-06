@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,6 +32,7 @@ import { MapaComponent } from './Pages/home/children/mapa/mapa.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBwpIoGAWFL4xQnYb7ZT_p9lWQugkhTg10'
     })
