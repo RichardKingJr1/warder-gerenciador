@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { GlobalService } from 'src/app/globalServices/global.service';
 import { DataAjusteService } from '../../services/data-ajuste.service';
 
 import { WebSocketService } from '../../services/web-socket.service';
@@ -19,11 +21,19 @@ export class SolicitacoesComponent implements OnInit {
   constructor(
     private webSocketService:WebSocketService,
     private _buscarImovel:BuscarImovelService,
-    private _dataAjusteService: DataAjusteService
+    private _dataAjusteService: DataAjusteService,
+    private global:GlobalService,
+    private router: Router
     ) { }
 
   ngOnInit(): void {
     this.buscarSolicitacao();
+  }
+
+  sair(){
+    console.log('sair');
+    this.global.deslogar();
+    this.router.navigate(['/login']);
   }
 
   buscarSolicitacao(){

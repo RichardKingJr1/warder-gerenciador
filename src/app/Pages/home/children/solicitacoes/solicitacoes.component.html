@@ -1,7 +1,7 @@
 <div class="chat-bottom dark-bg p-3 shadow-xss" style="width: 48.5%;">
     <div ><input class="input-painel" type="text" placeholder="Endereço" [(ngModel)]="endereco"></div>                                      
     <button class="botao-top" style="margin: 0 1.8%" (click)="adicionarTracking()">Adicionar</button>
-    <button class="botao-top" >Sair</button>
+    <button class="botao-top" (click)="sair()">Sair</button>
 </div> 
 
 <div class="chat-bottom dark-bg p-3 shadow-xss scroll-bar" style="width: 48.5% !important; left: 49% !important; height: 124px; overflow-y: scroll; overflow-x: hidden;" >  

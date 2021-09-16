@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { async } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { GlobalService } from './global.service';
@@ -10,52 +11,34 @@ import { GlobalService } from './global.service';
 export class AuthGuard implements CanActivate {
   
   constructor(private global: GlobalService, private router: Router, private http: HttpClient){}
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): boolean {
-      if(!this.global.logado){
-        if(localStorage.getItem('email') && localStorage.getItem('senha')){
+
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    
+    if(localStorage.getItem('email') && localStorage.getItem('token')){
+      return new Observable<boolean>(obs => {        
           let dataObj = {
             email: localStorage.getItem('email'),
-            senha: localStorage.getItem('senha')
+            token: localStorage.getItem('token')
           };
-    
-          let email: any = localStorage.getItem('email');
-          let senha: any = localStorage.getItem('senha');
-    
-          if(this.burcar(dataObj, email, senha) == true){
-            return true;
-          }else{
-            return false;
-          }
 
-        }else{
-          this.router.navigate(['/login']);
-          return false;
-        };
-      }else{
-        return true;
-      };
-  };
-
-  burcar(dataObj: any, email: any, senha: any): any{
-    this.http.post(this.global.endereco+'login.php',dataObj)
-    .subscribe(data=> {
-      //this.spinner.hide();
-      if(data == "erro"){
-        this.router.navigate(['/login']);
-        return false;
-      }else{
-        let id: any = data;
-        this.global.logar(id['id_usuario'], email, senha);
-        this.router.navigate(['/inicio']);
-        return true;
-      };
-    }, error =>{
+          this.http.post(this.global.endereco+'/verify',dataObj).subscribe(
+              data => {
+                let response: any = data;
+                  if (response.token) {
+                      console.log('Sucess');
+                      // They don't have a team, lets redirect
+                      obs.next(true);
+                  }
+                  else {
+                      console.log('fail');
+                      obs.next(false);
+                  }
+              }
+          );
+      });
+    }else{
       return false;
-    }, () =>{
-      return false;
-    });
-  }
+    }
+}
   
 }

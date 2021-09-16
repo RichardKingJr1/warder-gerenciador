@@ -17,22 +17,23 @@ export class LoginComponent implements OnInit {
 
   logar(login: string, senha: string){
     //this.spinner.show();
+    console.log(login+senha);
 
     let dataObj = {
-      login: login,
+      email: login,
       senha: senha
       //imovel: this.activatedRoute.snapshot.params.id
     };
 
-    this.http.post(this.global.endereco+'login.php',dataObj)
-    .subscribe(data=> {
+    this.http.post(this.global.endereco+'/login',dataObj).subscribe(data => {
+      let response: any = data;
       //this.spinner.hide();
-      if(data == "erro"){
+      console.log(response);
+      if(!response.token){
         window.alert('Login ou senha incorretos');
       }else{
-        let id: any = data;
-        this.global.logar(id['id_usuario'], login, senha);
-        //this.router.navigate([this.global.destino]);
+        //this.global.logar(response['token'], login, senha);
+        this.global.logar(response['token'], login);
         this.router.navigateByUrl('/inicio');
       }
     });
