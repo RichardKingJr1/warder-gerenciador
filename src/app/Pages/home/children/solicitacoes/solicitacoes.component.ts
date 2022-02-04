@@ -34,6 +34,7 @@ export class SolicitacoesComponent implements OnInit {
     console.log('sair');
     this.global.deslogar();
     this.router.navigate(['/login']);
+    this.webSocketService.stop();
   }
 
   buscarSolicitacao(){

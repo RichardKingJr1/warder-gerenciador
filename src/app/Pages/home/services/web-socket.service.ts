@@ -25,4 +25,12 @@ export class WebSocketService {
   emit(eventName: string, data: any){
     this.socket.emit(eventName,data);
   }
+
+  start(){
+    this.socket = io('http://localhost:3000');
+  }
+
+  stop(){
+    this.socket.disconnect();
+  }
 }

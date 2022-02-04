@@ -11,6 +11,7 @@ export class HomeComponent implements OnInit {
   constructor(private webSocketService:WebSocketService) { }
 
   ngOnInit(): void {
+    this.webSocketService.start();
     //testa se ouve uma conexão ou uma reconexão, caso ocorra avisa o server quem é o userMaster
     this.conexao();
     
