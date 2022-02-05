@@ -32,60 +32,104 @@ export class MonitoradorService {
     busca(): Observable<usuarioType[]>  {
     this.webSocketService.listen('newUser').subscribe((data:any) => {
       console.log(data);
-      this.ultimosUsuarios = this.usuarios;
       this.usuarios_pre = data;
       this.usuarios = data;
 
+      //testa se usuario saiu da rota
+      /* for (const l of this.usuarios_pre){
+        //testa se o usuario ja esta fora da rota, se nao inicia teste
+        if(l.onRoute){
+          //busca a rota 
+          let rota = this._buscarImovel.buscarRota(l.id_imovel);
+          //console.log('Rota: '+rota);
+          let dist = {
+            index: -1,
+            diff: 999999999999,
+            lat: 0,
+            lon: 0
+          };
+          let i = 0;
 
-      if(this.ultimosUsuarios){
-        //descobre a fase da viagem
-        for (const x of this.usuarios_pre){ 
-          switch(x.status){
-            case 1: //indo até a case
-              //verifica mudança de fase
-              if(this.verificarDistancia(x.lat, x.lat_d, x.lon, x.lon_d,1)){
-                //procura se a chegada ja foi marcada
-                let foundIndex = this.estacionando.findIndex(z => z.rg == x.rg);
-                if(foundIndex != -1){
-                  //se a chegada ja foi marcada verifica se ja está na localização a 30s
-                  if(Date.now() - this.estacionando[foundIndex].timestamp > 30000){
-                    //atualiza faze de posicionamento
-                    console.log(x);
-                    console.log(x.duracao_viajem);
-                    this.estacionando.filter(u => u.rg !== x.rg);
-                    this.atualizaPosicao(x.rg, 2, x.duracao_viajem);
-                  }
-                }else{
-                  //se não foi marcada adicionar chegada no array
-                  let tempoObj = {
-                    rg: x.rg,
-                    timestamp: Date.now()
-                  };
-                  this.estacionando.push(tempoObj);
+          //encontra a menor distancia entre todos os pontos da rota
+          for (const ponto of rota){
+            let dif_ponto = Math.abs(Math.sqrt((ponto[0]-l.lat) * (ponto[0]-l.lat) + (ponto[1]-l.lon) * (ponto[1]-l.lon)));
+
+            if(dist.diff > dif_ponto){
+              dist.diff = dif_ponto;
+              dist.index = i;
+              dist.lat = ponto[0];
+              dist.lon = ponto[1];            
+            }
+
+            i = i + 1;
+          }
+
+          //se a menor distancia ultrapassar 30m dispara aviso
+          if(dist.diff > 0.00030){
+            //window.alert('Erro rota');
+            console.log('Lat_ponto: '+dist.lat);
+            console.log('Lon_ponto: '+dist.lon);
+            console.log('Lat_l: '+l.lat);
+            console.log('Lon_l: '+l.lon);
+            console.log(dist.diff);
+            l.onRoute = false;
+            this.webSocketService.emit('offRoute', l.rg);
+            this.audioRota.nativeElement.play();
+          }else{
+            //l.lat = dist.lat;
+            //l.lon = dist.lon; 
+          };
+        }
+      }; */
+
+      //descobre a fase da viagem
+      for (const x of this.usuarios_pre){ 
+        switch(x.status){
+          case 1: //indo até a case
+            //verifica mudança de fase
+            if(this.verificarDistancia(x.lat, x.lat_d, x.lon, x.lon_d,1)){
+              //procura se a chegada ja foi marcada
+              let foundIndex = this.estacionando.findIndex(z => z.rg == x.rg);
+              if(foundIndex != -1){
+                //se a chegada ja foi marcada verifica se ja está na localização a 30s
+                if(Date.now() - this.estacionando[foundIndex].timestamp > 30000){
+                  //atualiza faze de posicionamento
+                  console.log(x);
+                  console.log(x.duracao_viajem);
+                  this.estacionando.filter(u => u.rg !== x.rg);
+                  this.atualizaPosicao(x.rg, 2, x.duracao_viajem);
                 }
-              };  
-              //verifica se a fase esta dentro do tempo
-              this.verificaTempo(x.tempo_chegada, x.rg, x.status);
-              break;
-  
-            case 2://entregando na casa
-              //verifica mudança de fase
-              if(this.verificarDistancia(x.lat, x.lat_d, x.lon, x.lon_d,2)){
-                //atualiza faze de posicionamento
-                this.atualizaPosicao(x.rg, 3, x.duracao_viajem);
-              };
-              //verifica se a fase esta dentro do tempo
-              this.verificaTempo(x.tempo_permanencia, x.rg, x.status);
-              break;
-  
-            case 3: //saindo do condo
-              this.verificaTempo(x.tempo_saida, x.rg, x.status);
-              break;
-  
-            //default:
-          };   
-        };
-      }
+              }else{
+                //se não foi marcada adicionar chegada no array
+                let tempoObj = {
+                  rg: x.rg,
+                  timestamp: Date.now()
+                };
+                this.estacionando.push(tempoObj);
+              }
+            };  
+            //verifica se a fase esta dentro do tempo
+            this.verificaTempo(x.tempo_chegada, x.rg, x.status);
+            break;
+
+          case 2://entregando na casa
+            //verifica mudança de fase
+            if(this.verificarDistancia(x.lat, x.lat_d, x.lon, x.lon_d,2)){
+              //atualiza faze de posicionamento
+              this.atualizaPosicao(x.rg, 3, x.duracao_viajem);
+            };
+            //verifica se a fase esta dentro do tempo
+            this.verificaTempo(x.tempo_permanencia, x.rg, x.status);
+            break;
+
+          case 3: //saindo do condo
+            this.verificaTempo(x.tempo_saida, x.rg, x.status);
+            break;
+
+          //default:
+        };   
+      };
+
 
       this.currentUsuarios.next(this.usuarios);
     })
