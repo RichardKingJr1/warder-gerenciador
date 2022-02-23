@@ -34,7 +34,7 @@ import { MapaComponent } from './Pages/home/children/mapa/mapa.component';
     FormsModule,
     HttpClientModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBwpIoGAWFL4xQnYb7ZT_p9lWQugkhTg10'
+      apiKey: 'process.env.MAPS'
     })
   ],
   providers: [],
